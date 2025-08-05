@@ -20,7 +20,8 @@
     "strictFunctionTypes": true,
     "skipDefaultLibCheck": true,
     "strictPropertyInitialization": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "skipLibCheck": true,
   },
   "include": ["src/**/*"],
   "exclude": ["test/**/*", "node_modules"]
