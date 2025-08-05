@@ -25,5 +25,5 @@ if (args.p || args.print) {
 
 if (args.o) {
   // Write resulting xml to file
-  writeOutput(args.o, output);
+  writeOutput(args.o as string, output);
 }
