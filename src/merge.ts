@@ -12,7 +12,9 @@ function rewriteBasedir(originalBaseDir: string, classes?: Class[]) {
         jsonClass.class?.map((jsonInnerClass) => {
           return {
             ...jsonInnerClass,
-            filename: path.relative(process.cwd(), path.join(originalBaseDir, jsonInnerClass.filename)),
+            filename: path
+              .relative(process.cwd(), path.join(originalBaseDir, jsonInnerClass.filename))
+              .replace(/\\/g, '/'),
           };
         }) ?? [],
     })) ?? []
@@ -78,8 +80,8 @@ export function mergeInputs(inputs: InputData[]): CoberturaJson {
                               (jsonClass) =>
                                 ({
                                   class: [jsonClass],
-                                } as Class)
-                            )
+                                }) as Class,
+                            ),
                           ),
                         },
                       ];
@@ -89,9 +91,9 @@ export function mergeInputs(inputs: InputData[]): CoberturaJson {
                     } else {
                       throw new Error('Unknown package format: ' + JSON.stringify(packages));
                     }
-                  })
+                  }),
                 );
-              })
+              }),
             ),
           },
         ],
@@ -102,7 +104,7 @@ export function mergeInputs(inputs: InputData[]): CoberturaJson {
 
 function sumCoverageProperty(
   inputs: InputData[],
-  property: 'lines-covered' | 'lines-valid' | 'branches-covered' | 'branches-valid'
+  property: 'lines-covered' | 'lines-valid' | 'branches-covered' | 'branches-valid',
 ) {
   return inputs.reduce((count: number, input: InputData) => count + parseInt(input.data.coverage[0][property], 10), 0);
 }

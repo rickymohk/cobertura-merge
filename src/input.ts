@@ -1,5 +1,4 @@
 import { ParsedArgs } from 'minimist';
-import { isArray, isString } from 'util';
 import { toJson } from 'xml2json';
 import { CoberturaJson } from './types/cobertura';
 import * as fs from 'fs';
@@ -11,7 +10,7 @@ interface PackageJson {
 
 function printHelp() {
   const packageJson = JSON.parse(
-    fs.readFileSync(path.join(__dirname, '../../package.json')).toString('utf-8')
+    fs.readFileSync(path.join(__dirname, '../../package.json')).toString('utf-8'),
   ) as PackageJson;
 
   console.log(`Version ${packageJson.version}`);
@@ -37,7 +36,14 @@ export function validateArgs(args: ParsedArgs): void {
     process.exit(1);
   }
 
-  if (args._.length < 3 || args.o === true || isArray(args.o) || isString(args.p) || isArray(args.p)) {
+  if (
+    args._.length < 3 ||
+    args.o === true ||
+    Array.isArray(args.o) ||
+    typeof args.p == 'string' ||
+    Array.isArray(args.p) ||
+    (!args.o && !args.p && !args.print)
+  ) {
     // Input error
     printHelp();
   }
@@ -71,9 +77,9 @@ export function getInputDataFromArgs(args: ParsedArgs): InputData[] {
         toJson(fs.readFileSync(fileName, 'utf-8'), {
           arrayNotation: true,
           reversible: true,
-        })
+        }),
       ) as CoberturaJson;
-    } catch (e) {
+    } catch {
       console.log(`Unable to read file ${fileName}`);
       process.exit(1);
     }
