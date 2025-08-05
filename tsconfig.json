@@ -21,5 +21,7 @@
     "skipDefaultLibCheck": true,
     "strictPropertyInitialization": true,
     "sourceMap": true
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["test/**/*", "node_modules"]
 }
